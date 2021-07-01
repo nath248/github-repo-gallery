@@ -3,6 +3,8 @@ const overviewDiv = document.querySelector(".overview");
 
 const username = "nath248"; // Github username
 const repoList = document.querySelector(".repo-list"); // unordered list to display the repos list
+const repoSection = document.querySelector(".repos"); //  section with a class of "repos" where all your repo information appears
+const repoDataSection = document.querySelector(".repo-data"); // section with a class of "repo-data" where the individual repo data will appear
 
 
 // Fetch API JSON Data
@@ -37,9 +39,9 @@ const displayInfo = function(profile) {
 // Fetch Your Repos
 
 const repoData = async function() {
-    const repoInfo = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
-    const repos = await repoInfo.json();
-    console.log(repos);
+    const fetchRepoInfo = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repos = await fetchRepoInfo.json();
+    //console.log(repos);
     displayRepoInfo(repos);
 };
 
@@ -50,4 +52,24 @@ const displayRepoInfo = function(repos) {
         repoItem.innerHTML = `<h3>${repo.name}</h3>`;
         repoList.append(repoItem);
     }
+};
+
+// Click Event 
+
+repoList.addEventListener("click", function(e) {
+    if (e.target.matches("h3")) {
+        const repoName = e.target.innerText;
+        specificRepoData(repoName);
+    }
+});
+
+// Function to Get Specific Repo Info
+
+const specificRepoData = async function(repoName) {
+    const specificRepoInfo = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
+    const repoInfo = await specificRepoInfo.json();
+    console.log(repoInfo);
+    const fetchLanguages = await fetch(repoInfo.languages_url);
+    const languageData = await fetchLanguages.json();
+    console.log(languageData);
 };
