@@ -108,7 +108,7 @@ returnButton.addEventListener("click", function() {
 
 filterInput.addEventListener("input", function(e) {
     const searchValue = e.target.value;
-    console.log(searchValue);
+    // console.log(searchValue);
     const repos = document.querySelectorAll(".repo");
     const lowercase = searchValue.toLowerCase();
     for (const repo of repos) {
