@@ -1,11 +1,10 @@
-// This div is where your profile information will appear
-const overviewDiv = document.querySelector(".overview");
-
+const overviewDiv = document.querySelector(".overview"); // This div is where your profile information will appear
 const username = "nath248"; // Github username
 const repoList = document.querySelector(".repo-list"); // unordered list to display the repos list
 const repoSection = document.querySelector(".repos"); //  section with a class of "repos" where all your repo information appears
 const repoDataSection = document.querySelector(".repo-data"); // section with a class of "repo-data" where the individual repo data will appear
-
+const returnButton = document.querySelector(".view-repos"); // Select the Back to Repo Gallery button
+const filterInput = document.querySelector(".filter-repos"); // Select the input with the "Search by name" placeholder
 
 // Fetch API JSON Data
 const profileData = async function() {
@@ -46,6 +45,7 @@ const repoData = async function() {
 };
 
 const displayRepoInfo = function(repos) {
+    filterInput.classList.remove("hide");
     for (const repo of repos) {
         const repoItem = document.createElement("li");
         repoItem.classList.add("repo");
@@ -93,4 +93,30 @@ const displaySpecificRepoData = function(repoInfo, languages) {
     repoDataSection.append(div);
     repoDataSection.classList.remove("hide");
     repoSection.classList.add("hide");
+    returnButton.classList.remove("hide");
 };
+
+// Click Event to the Back Button
+
+returnButton.addEventListener("click", function() {
+    repoSection.classList.remove("hide");
+    repoDataSection.classList.add("hide");
+    returnButton.classList.add("hide");
+});
+
+// Input Event to the Search Box
+
+filterInput.addEventListener("input", function(e) {
+    const searchValue = e.target.value;
+    console.log(searchValue);
+    const repos = document.querySelectorAll(".repo");
+    const lowercase = searchValue.toLowerCase();
+    for (const repo of repos) {
+        const repoLowerCase = repo.innerText.toLowerCase();
+        if (repoLowerCase.includes(lowercase)) {
+            repo.classList.remove("hide");
+        } else {
+            repo.classList.add("hide");
+        }
+    }
+});
